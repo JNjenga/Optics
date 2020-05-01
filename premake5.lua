@@ -24,7 +24,7 @@ workspace 'VisualWorkspace'
 	cppdialect 'C++11'
 
 -- Include Glad
-include '3rdParty/Glad'
+include '3rdParty/glad'
 include '3rdParty/Glfw'
 
 project 'Visual'
@@ -32,8 +32,8 @@ project 'Visual'
 	language 'C++'
 
 	includedirs{
-		'3rdParty/Glfw/include',
-		'3rdParty/Glad/include',
+		'3rdParty/glfw/include',
+		'3rdParty/glad/include',
 		'3rdParty/glm/include',
 	}
 

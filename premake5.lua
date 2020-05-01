@@ -3,17 +3,12 @@ workspace 'VisualWorkspace'
 	architecture 'x86_64'
 	language 'C++'
 
-	configurations { "Debug32", "Release32", "Debug64", "Release64" }
+	configurations { "Debug", "Release" }
 
-	filter "configurations:*32"
-		architecture "x86"
-
-	filter "configurations:*64"
-		architecture "x86_64"
 	
-	filter {'configurations:Debug*'}
+	filter {'configurations:Debug'}
 		symbols 'On'
-	filter {'configurations:Release*'}
+	filter {'configurations:Release'}
 		optimize 'On'
 	filter {}
 
@@ -21,11 +16,11 @@ workspace 'VisualWorkspace'
 
 	objdir 'bin/Obj'
 
-	cppdialect 'C++11'
+	-- cppdialect 'C++11'
 
 -- Include Glad
 include '3rdParty/glad'
-include '3rdParty/Glfw'
+include '3rdParty/glfw'
 
 project 'Visual'
 	kind 'ConsoleApp'
@@ -35,9 +30,10 @@ project 'Visual'
 		'3rdParty/glfw/include',
 		'3rdParty/glad/include',
 		'3rdParty/glm/include',
+		'src',
 	}
 
-	pchheader 'src/vis_pch.hpp'
+	pchheader "src/vis_pch.hpp"
 
 	files {
 		'src/**.cpp',
@@ -46,7 +42,7 @@ project 'Visual'
 	}
 
 	links {
-		'GlfwStatic3.3'.
+		'GlfwStatic3.3',
 		'Glad'
 	}
 

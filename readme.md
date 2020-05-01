@@ -1,3 +1,4 @@
+*Still under dev*
 Visualize :
 
 - Audio Files (.mp3)
@@ -7,12 +8,12 @@ Visualize :
 
 And more
 
-Tech used : Opengl & Vulkan
+Tech used : Opengl
 
 ### How to run
 
-`audvis data.mp3`
-`audvis data.csv`
+`optics data.mp3`
+`optics data.csv`
 
 ### How build
 
@@ -22,6 +23,3 @@ Run the premake script
 
 The solution/make files will be in the `workspace` directory.
 
-### Lisence
-
-CCO 

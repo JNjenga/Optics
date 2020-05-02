@@ -12,9 +12,9 @@ And more
 Tech used : Opengl
 
 ### How to run
-
-`optics data.mp3`
-`optics data.csv`
+This is how I intend to run the application,  none of this has been implemented yet !
+`vision data.mp3`
+`vision data.csv`
 
 ### How build
 

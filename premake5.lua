@@ -2,7 +2,7 @@ workspace 'VisualWorkspace'
 	location 'workspace'
 	architecture 'x86_64'
 	language 'C++'
-
+	startproject 'Visual'
 	configurations { "Debug", "Release" }
 
 	
@@ -29,11 +29,11 @@ project 'Visual'
 	includedirs{
 		'3rdParty/glfw/include',
 		'3rdParty/glad/include',
-		'3rdParty/glm/include',
+		'3rdParty/glm',
 		'src',
 	}
 
-	pchheader "src/vis_pch.hpp"
+	-- pchheader "src/vis_pch.hpp"
 
 	files {
 		'src/**.cpp',

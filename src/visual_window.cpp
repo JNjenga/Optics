@@ -52,11 +52,9 @@ void Vis::VisualWindow::init(int width, int height)
 		[](GLFWwindow* window, double xpos, double ypos)
 		{
 			auto & m = Vis::Mouse::getMouse();
-			std::cout <<"B4 : "<< m.x << " " << m.y << "\n";
 
 			m.x = (float)xpos;
 			m.y = (float)ypos;
-			std::cout << m.x << " " << m.y << "\n";
 		}
 	);
 

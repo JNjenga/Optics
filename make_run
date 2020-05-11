@@ -1,0 +1,19 @@
+make -C ./workspace
+
+# Get the exit status of the command
+status=$?
+
+if test $status -eq 0
+then
+
+	if test $1 -eq 0
+	then
+		echo "Make file executed succesfulluy\n"
+	else
+		echo "Make file executed succesfulluy\n"
+		./bin/Visual
+	fi
+else
+	echo "Make error\n"
+fi
+

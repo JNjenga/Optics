@@ -9,6 +9,10 @@ Visualize :
 
 And more
 
+Cool stuff I'd want to visualize:
+- [Conoway's game of life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
+- [MandelBrot sets stuff](https://en.wikipedia.org/wiki/Mandelbrot_set)
+
 Tech used : Opengl
 
 ### How to run

@@ -2,7 +2,7 @@
 #include <GL/gl.h>
 #include "application.hpp"
 #include "visual_window.hpp"
-
+#include <math.h>
 #include "input.hpp"
 
 uint32_t Vis::Application::HEIGHT;
@@ -46,7 +46,7 @@ void Vis::Application::run()
 	float width = static_cast<float>(WIDTH);
 	float height = static_cast<float>(HEIGHT);
 
-	Vis::Cartesian * c = new Vis::Cartesian((width/5.0f), 0.0f, width, height, 40.0f, 40.0f);
+	Vis::Cartesian * c = new Vis::Cartesian((width/5.0f), 0.0f, width, height, 40.0f, 40.0f, 0.1f);
 
 	// J
 	c->shadeCell(3,3);
@@ -72,20 +72,17 @@ void Vis::Application::run()
 		m_Renderer->clear();
 		
 		// Side nav
-		m_Renderer->drawQuad({ 0.0f,  0.0f, 0.0f }, { WIDTH / 5, HEIGHT }, { 0.247f, 0.317f, 0.709f });
+		{
+			m_Renderer->drawQuad({ 0.0f,  0.0f, 0.0f }, { WIDTH / 5, HEIGHT }, { 0.247f, 0.317f, 0.709f });
 
-		// Control widgets
-		m_Renderer->drawQuad({ 0.0f,  0.0f, 0.0f }, { WIDTH / 5 , 40.0f }, { 0.188f, 0.247f, 0.623f });
-		m_Renderer->drawQuad({ 10.0f,  50.0f, 0.0f }, { WIDTH / 5 - 30.0f, 25.0f }, { 0.898f, 0.905f, 0.960f });
-		m_Renderer->drawQuad({ 10.0f,  100.0f, 0.0f }, { WIDTH / 5 - 30.0f, 25.0f }, { 0.898f, 0.905f, 0.960f });
-		m_Renderer->drawQuad({ 10.0f,  150.0f, 0.0f }, { WIDTH / 5 - 30.0f, 25.0f }, { 0.898f, 0.905f, 0.960f });
-		
-		// Line
-		// m_Renderer->drawLine({WIDTH/2, 0.0f}, {WIDTH/2, HEIGHT}, {0.0f, 0.0f, 0.0f}, 10.0f);
-		//
+			// Control widgets
+			m_Renderer->drawQuad({ 0.0f,  0.0f, 0.0f }, { WIDTH / 5 , 40.0f }, { 0.188f, 0.247f, 0.623f });
+			m_Renderer->drawQuad({ 10.0f,  50.0f, 0.0f }, { WIDTH / 5 - 30.0f, 25.0f }, { 0.898f, 0.905f, 0.960f });
+			m_Renderer->drawQuad({ 10.0f,  100.0f, 0.0f }, { WIDTH / 5 - 30.0f, 25.0f }, { 0.898f, 0.905f, 0.960f });
+			m_Renderer->drawQuad({ 10.0f,  150.0f, 0.0f }, { WIDTH / 5 - 30.0f, 25.0f }, { 0.898f, 0.905f, 0.960f });
 
-		// m_Renderer->drawCartesianPlane(static_cast<float>(WIDTH / 5), 0.0f, WIDTH, HEIGHT, 40.0f, 40.0f);
-		
+		}
+
 		m_Renderer->drawCartesianPlane(c);
 		// Update cartesian
 		if(c->end_x != width)
@@ -94,11 +91,27 @@ void Vis::Application::run()
 			c->end_x = width;
 			c->end_y = height;
 		}
-		if (m.mouseLeftClick())
-		{
-			m_Renderer->drawQuad({ 0.0f, 0.0f, 0.0f }, { m.x, m.y }, { 0.188f, 0.247f, 0.623f });
-		}
+		
+		// Snapping of pointer to cell corners
+		if(m.x > c->origin_x){
+			float p_x = 0.0f;
+			float p_y = 0.0f;
 
+			p_x = m.x - c->origin_x ;
+			p_x = p_x / c->getCellWidth();
+			float offset = fmodf(p_x,1.0f);
+			p_x = ((offset > 0.5f) ? ceilf(p_x) : floorf(p_x))  * c->getCellWidth() + c->origin_x;
+			
+			p_y = m.y - c->origin_y;
+			p_y = p_y / c->getCellHeight();
+			offset = fmodf(p_y, 1.0f);
+
+			p_y = ((offset > 0.5f) ? ceilf(p_y) : floorf(p_y))  * c->getCellHeight() + c->origin_y;
+
+			// m_Renderer->drawPoint({ p_x , p_y, 0.0f }, { 0.560f, 0.f, 0.188f });
+			m_Renderer->drawQuad({ p_x , p_y, 0.0f }, { c->getCellWidth(), c->getCellHeight() }, { 0.560f, 0.f, 0.188f });
+
+		}
 
 		m_Window_Object->update();
 
@@ -108,3 +121,10 @@ Vis::Application::~Application()
 {
 	delete m_Window_Object;
 }
+
+/* For reference puroposes
+if (m.mouseLeftClick())
+{
+	m_Renderer->drawQuad({ 0.0f, 0.0f, 0.0f }, { m.x, m.y }, { 0.188f, 0.247f, 0.623f });
+}
+*/

@@ -71,8 +71,16 @@ void Vis::Renderer::drawCartesianPlane(float x, float y, float x_end, float y_en
 
 void Vis::Renderer::drawCartesianPlane(Vis::Cartesian * c) const
 {
-	float h_span = c->end_y/c->cell_height;
-	float v_span = c->end_x/c->cell_width;
+	// Draw shaded
+	for (auto & v2 : c->shaded)
+	{
+		drawQuad({ c->getCellWidth() * v2.x + c->origin_x, c->getCellHeight() * v2.y + c->origin_y, 0.0f },
+			{ c->getCellWidth(), c->getCellHeight() },
+			{ 0.219f, 0.219f, 0.219f });
+	}
+
+	float h_span = c->end_y/c->getCellHeight();
+	float v_span = c->end_x/c->getCellWidth();
 
 	// std::cout<<"H : "<< h_span<<" V : " << v_span<<"\n";
 	// c->log();
@@ -80,26 +88,20 @@ void Vis::Renderer::drawCartesianPlane(Vis::Cartesian * c) const
 	float j = c->origin_x;
 	for(float i = 0.0f; i< v_span; i++)
 	{
-		drawLine({j,c->origin_y}, {j, c->end_y }, {}, 2.0f );
+		drawLine({j,c->origin_y}, {j, c->end_y }, { 0.133f, 0.568f, 0.521f }, 1.0f );
 		// std::cout<<"("<<j<<","<<c->origin_y<<"),("<<j<<","<<c->end_y<<")\n";
-		j+=c->cell_width;
+		j+=c->getCellWidth();
 	}
 	// Horizontal
 	j = 0.0f;
 	for(float i = 0.0f; i< h_span; i++)
 	{
-		drawLine({c->origin_x,j }, {c->end_x, j}, {}, 2.0f );
+		drawLine({c->origin_x,j }, {c->end_x, j}, { 0.133f, 0.568f, 0.364f }, 1.0f );
 		// printf("(%d , %d ),(%d , %d)\n", c->origin_x, j,c->end_x, j);
-		j+=c->cell_height;
+		j+=c->getCellHeight();
 	}
 
-	// Draw shaded
-	for(auto & v2 : c->shaded)
-	{
-		drawQuad({c->cell_width * v2.x + c->origin_x, c->cell_height * v2.y + c->origin_y, 0.0f},
-				{c->cell_width, c->cell_height},
-				{1.0f,0.0f,0.0f});
-	}
+
 
 
 }

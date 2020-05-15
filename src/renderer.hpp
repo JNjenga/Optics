@@ -27,7 +27,7 @@ namespace Vis
 				float cellWidth, float cellHeight) const ;
 		void drawCartesianPlane(Cartesian* c) const;
 		
-		virtual void clear(glm::vec3 color = glm::vec3(0.9f, 0.9f, 0.9f), float alpha = 1.0f) const;
+		virtual void clear(glm::vec3 color = glm::vec3(0.92f, 0.92f, 0.92f), float alpha = 1.0f) const;
 
 		virtual ~Renderer();
 

@@ -1,5 +1,6 @@
+Cell corner snapping -------- Done
+Cartesian plane scaleing ---- Done
 Cell manipulation
-Cell corner snapping
-Draw primitive shapes
 Zoom in and out
+Draw primitive shapes
 Navigation UI

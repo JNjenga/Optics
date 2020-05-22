@@ -21,6 +21,7 @@ workspace 'VisualWorkspace'
 -- Include Glad
 include '3rdParty/glad'
 include '3rdParty/glfw'
+-- include '3rdParty/dearimgui'
 
 project 'Visual'
 	kind 'ConsoleApp'

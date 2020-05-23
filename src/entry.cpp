@@ -4,11 +4,11 @@
 
 int main()
 {
-	Vis::Application * e = new Vis::Application();
+	Vis::Application * application = Vis::Application::getApp();
 
-	e->run();
+	application->run();
 
-	delete e;
+	delete application;
 
 	return 0;
 }

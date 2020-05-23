@@ -10,19 +10,24 @@ namespace Vis
 	{
 		static uint32_t WIDTH, HEIGHT;
 
-		virtual void init() ;
-		virtual void update() ;
-		virtual void run();
-		virtual ~Application();
+		void init() ;
+		void update() ;
+		void run();
+
+		~Application();
 
 		VisualWindow * m_Window_Object;
 		Renderer * m_Renderer;
+		Vis::Cartesian * c;
 
+		static Vis::Application  * getApp();
 
-		
+	private:
+		static Vis::Application * app;
 
 
 	};
 }
+
 
 #endif

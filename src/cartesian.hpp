@@ -19,6 +19,7 @@ namespace Vis {
 
 		float scale;
 
+
 		std::vector<glm::vec2> shaded;
 
 		Cartesian(float o_x, float o_y, float e_x, float e_y, float c_w, float c_h, float s_l)

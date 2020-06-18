@@ -20,15 +20,15 @@ void Vis::Renderer::drawPoint(glm::vec3 position, glm::vec3 color ,
 	glEnd();
 }
 
-void Vis::Renderer::drawQuad(const glm::vec3 position,const glm::vec2 size, const glm::vec3 color) const
+void Vis::Renderer::drawQuad(const glm::vec2 position,const glm::vec2 size, const glm::vec3 color) const
 {
 	glColor3fv(&color[0]);
 
 	glBegin(GL_POLYGON);//begin drawing of polygon
-	glVertex3f(position.x, position.y, position.z); // Left Top 
-	glVertex3f(position.x + size.x, position.y, position.z); // Right Top 
-	glVertex3f(position.x + size.x, position.y + size.y, position.z); // Right Bottom
-	glVertex3f(position.x , position.y + size.y, position.z); // Left Bottom
+	glVertex3f(position.x, position.y, 0.0f); // Left Top 
+	glVertex3f(position.x + size.x, position.y, 0.0f); // Right Top 
+	glVertex3f(position.x + size.x, position.y + size.y, 0.0f); // Right Bottom
+	glVertex3f(position.x , position.y + size.y, 0.0f); // Left Bottom
 	
 	glEnd();//end drawing of polygon
 }
@@ -69,55 +69,27 @@ void Vis::Renderer::drawCartesianPlane(float x, float y, float x_end, float y_en
 
 }
 
-void Vis::Renderer::drawCartesianPlane(Vis::Cartesian * c) const
-{
-	// Draw shaded
-	for (auto & v2 : c->shaded)
-	{
-		drawQuad({ c->getCellWidth() * v2.x + c->origin_x, c->getCellHeight() * v2.y + c->origin_y, 0.0f },
-			{ c->getCellWidth(), c->getCellHeight() },
-			{ 0.219f, 0.219f, 0.219f });
-	}
-
-	float h_span = c->end_y/c->getCellHeight();
-	float v_span = c->end_x/c->getCellWidth();
-
-	// std::cout<<"H : "<< h_span<<" V : " << v_span<<"\n";
-	// c->log();
-	// Vertical
-	float j = c->origin_x;
-	for(float i = 0.0f; i< v_span; i++)
-	{
-		drawLine({j,c->origin_y}, {j, c->end_y }, { 0.133f, 0.568f, 0.521f }, 1.0f );
-		// std::cout<<"("<<j<<","<<c->origin_y<<"),("<<j<<","<<c->end_y<<")\n";
-		j+=c->getCellWidth();
-	}
-	// Horizontal
-	j = 0.0f;
-	for(float i = 0.0f; i< h_span; i++)
-	{
-		drawLine({c->origin_x,j }, {c->end_x, j}, { 0.133f, 0.568f, 0.364f }, 1.0f );
-		// printf("(%d , %d ),(%d , %d)\n", c->origin_x, j,c->end_x, j);
-		j+=c->getCellHeight();
-	}
-}
-
 void Vis::Renderer::drawCartesianPlane(Vis::CartesianPlane * c) const
 {
 	int v_lines = (int)(c->width / c->getCellWidth()) + 1;
 	int h_lines = (int)(c->height / c->getCellHeight()) + 1;
 	
+	// Draw background
+	drawQuad({ c->x_origin, c->y_origin }, { c->width, c->height }, { 0.870f, 0.945f, 0.835f });
+
 	// Draw vertical lines
-	
+
 	for(int i = 0; i < v_lines; i++){
 		float origin_offest = c->x_origin + (c->getCellWidth()* i);
 		float end_offset = c->y_origin + c->height;
 		
 		if(i == v_lines/2 ){
-			drawLine({ origin_offest, c->y_origin }, { origin_offest , end_offset }, {1.0f, 0.0f, 1.0f}, c->line_weight);
+			drawLine({ origin_offest, c->y_origin },
+				{ origin_offest , end_offset }, {1.0f, 0.0f, 1.0f}, c->line_weight);
 			continue;
 		}
-		drawLine({ origin_offest, c->y_origin }, { origin_offest , end_offset }, {}, c->line_weight);
+		drawLine({ origin_offest, c->y_origin },
+			{ origin_offest , end_offset }, {}, c->line_weight);
 	}
 
 	
@@ -130,6 +102,20 @@ void Vis::Renderer::drawCartesianPlane(Vis::CartesianPlane * c) const
 			continue;
 		}
 		drawLine({  c->x_origin, origin_offest }, { end_offset, origin_offest  }, {}, c->line_weight);
+	}
+
+	// Shaded
+
+	for (glm::vec2 & coord :  c->shaded )
+	{
+		float quad_x = coord.x *  c->getCellWidth() + c->x_origin;
+		float quad_y = coord.y *  c->getCellHeight() + c->y_origin;
+		
+		// Check if visible
+		if (quad_x > (c->x_origin + c->width) || quad_y > (c->y_origin + c->height))
+			continue;
+
+		drawQuad({ quad_x, quad_y }, { c->getCellWidth(), c->getCellHeight() }, { 0.9f, 0.45f, 0.35f });
 	}
 }
 

@@ -1,7 +1,7 @@
 #include "vis_pch.hpp"
 #include <GL/gl.h>
 #include "application.hpp"
-#include "visual_window.hpp"
+#include "window.hpp"
 #include <math.h>
 #include "input.hpp"
 #include "ui.hpp"
@@ -17,7 +17,7 @@ void Vis::Application::init()
 	HEIGHT = 480;
 
 	// Create and init window	
-	m_Window_Object = new VisualWindow();
+	m_Window_Object = new VisionWindow();
 	m_Window_Object->init(WIDTH, HEIGHT);
 
 	/*
@@ -43,16 +43,42 @@ void Vis::Application::update()
 
 	if (k.keys[GLFW_KEY_LEFT_CONTROL])
 	{
-		if(m.y_scroll < 0)
+		if (m.y_scroll > 0)
 		{
-			if(!(c->scale > 1.5f))
-				c->scale += 0.05f;
-		}else if(m.y_scroll > 0)
-		{
-			if(!(c->scale < -1.5f))
-				c->scale -= 0.05f;
+
+			if (!(c->scale > 1.0f))
+			{
+				c->scale += 0.02f;
+			}
 
 		}
+		else if (m.y_scroll < 0) {
+			if (!(c->scale < 0.2f))
+			{
+				c->scale -= 0.02f;
+			}
+		}
+		m.y_scroll = 0;
+	}
+
+	/* Panning
+	*/
+	if (m.mouseCenterClick())
+	{
+		c->x_origin += m.dx;
+		c->y_origin += m.dy;
+	}
+
+	/* Update type of mouse */
+
+	if ((m.x > c->x_origin && m.x < c->getWidthBounds()) 
+			&& (m.y > c->y_origin && m.y < c->getHeightBounds()))
+	{
+		// TODO : Handle if the mouse enters the cartesian plane
+	}
+	else
+	{
+		// TODO : Handle if the mouse exits the cartesian plane
 	}
 
 }
@@ -67,6 +93,13 @@ void Vis::Application::run()
 	float height = static_cast<float>(HEIGHT);
 
 	c = new Vis::CartesianPlane(0.0f, 0.0f, width, height, 40.0f, 40.0f, .5f);
+
+	c->shaded.push_back(glm::vec2());
+	c->shaded.push_back(glm::vec2(2.0f, 2.0f));
+	c->shaded.push_back(glm::vec2(3.0f, 5.0f));
+	c->shaded.push_back(glm::vec2(32.0f, 2.0f));
+	c->shaded.push_back(glm::vec2(2.0f, 23.0f));
+
 	nuklearInit();
 
 	while (!glfwWindowShouldClose(m_Window_Object->getWindow()))
@@ -77,7 +110,6 @@ void Vis::Application::run()
 
 		m_Renderer->clear();
 		
- 		m_Renderer->drawQuad({c->x_origin, c->y_origin, 0.0f}, {c->width, c->height},{ 0.870f, 0.945f, 0.835f });
 		m_Renderer->drawCartesianPlane(c);
 	
 

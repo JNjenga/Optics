@@ -1,7 +1,7 @@
-#ifndef VISUAL_APPLICATION_H
-#define VISUAL_APPLICATION_H
+#ifndef VISION_APPLICATION_H
+#define VISION_APPLICATION_H
 
-#include "visual_window.hpp"
+#include "window.hpp"
 #include "renderer.hpp"
 
 namespace Vis
@@ -16,9 +16,9 @@ namespace Vis
 
 		~Application();
 
-		VisualWindow * m_Window_Object;
+		VisionWindow * m_Window_Object;
 		Renderer * m_Renderer;
-		Vis::Cartesian * c;
+		Vis::CartesianPlane * c;
 
 		static Vis::Application  * getApp();
 

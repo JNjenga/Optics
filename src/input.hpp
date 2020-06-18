@@ -1,5 +1,5 @@
-#ifndef VISUAL_INPUT_H
-#define VISUAL_INPUT_H
+#ifndef VISION_INPUT_H
+#define VISION_INPUT_H
 
 #include <glm/glm.hpp>
 
@@ -9,6 +9,7 @@ namespace Vis
 	{
 		RIGHT_CLICK,
 		LEFT_CLICK,
+		CENTER_CLICK,
 		SCROLL,
 		RESET
 	};
@@ -40,7 +41,10 @@ namespace Vis
 		{
 			return m_State == MouseEvents::RIGHT_CLICK;
 		}
-
+		bool mouseCenterClick()
+		{
+			return m_State == MouseEvents::CENTER_CLICK;
+		}
 		void reset()
 		{
 			m_State = MouseEvents::RESET;

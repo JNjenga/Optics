@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include  <algorithm>
+#include <algorithm>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>

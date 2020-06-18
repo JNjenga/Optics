@@ -1,7 +1,7 @@
 #include "vis_pch.hpp"
 #include <GL/gl.h>
 #include "application.hpp"
-#include "visual_window.hpp"
+#include "window.hpp"
 #include <math.h>
 #include "input.hpp"
 #include "ui.hpp"
@@ -17,7 +17,7 @@ void Vis::Application::init()
 	HEIGHT = 480;
 
 	// Create and init window	
-	m_Window_Object = new VisualWindow();
+	m_Window_Object = new VisionWindow();
 	m_Window_Object->init(WIDTH, HEIGHT);
 
 	/*
@@ -43,10 +43,44 @@ void Vis::Application::update()
 
 	if (k.keys[GLFW_KEY_LEFT_CONTROL])
 	{
-		c->origin_x += (c->origin_x - m.x);
-		c->origin_y += (c->origin_y - m.y);
+		if (m.y_scroll > 0)
+		{
+
+			if (!(c->scale > 1.0f))
+			{
+				c->scale += 0.02f;
+			}
+
+		}
+		else if (m.y_scroll < 0) {
+			if (!(c->scale < 0.2f))
+			{
+				c->scale -= 0.02f;
+			}
+		}
+		m.y_scroll = 0;
 	}
-	
+
+	/* Panning
+	*/
+	if (m.mouseCenterClick())
+	{
+		c->x_origin += m.dx;
+		c->y_origin += m.dy;
+	}
+
+	/* Update type of mouse */
+
+	if ((m.x > c->x_origin && m.x < c->getWidthBounds()) 
+			&& (m.y > c->y_origin && m.y < c->getHeightBounds()))
+	{
+		// TODO : Handle if the mouse enters the cartesian plane
+	}
+	else
+	{
+		// TODO : Handle if the mouse exits the cartesian plane
+	}
+
 }
 
 void Vis::Application::run()
@@ -58,21 +92,13 @@ void Vis::Application::run()
 	float width = static_cast<float>(WIDTH);
 	float height = static_cast<float>(HEIGHT);
 
-	c = new Vis::Cartesian(100.0f, 0.0f, width, height, 40.0f, 40.0f, 0.1f);
+	c = new Vis::CartesianPlane(0.0f, 0.0f, width, height, 40.0f, 40.0f, .5f);
 
-	// J
-	c->shadeCell(3,3);
-	c->shadeCell(4,3);
-	c->shadeCell(5,3);
-	c->shadeCell(6,3);
-	c->shadeCell(6,4);
-	c->shadeCell(6,5);
-	c->shadeCell(6,6);
-	c->shadeCell(6,7);
-	c->shadeCell(5,7);
-	c->shadeCell(4,7);
-	c->shadeCell(3,7);
-	c->shadeCell(3,6);
+	c->shaded.push_back(glm::vec2());
+	c->shaded.push_back(glm::vec2(2.0f, 2.0f));
+	c->shaded.push_back(glm::vec2(3.0f, 5.0f));
+	c->shaded.push_back(glm::vec2(32.0f, 2.0f));
+	c->shaded.push_back(glm::vec2(2.0f, 23.0f));
 
 	nuklearInit();
 
@@ -84,45 +110,12 @@ void Vis::Application::run()
 
 		m_Renderer->clear();
 		
-
-
 		m_Renderer->drawCartesianPlane(c);
-		// Update cartesian
-		
-		if(c->end_x != width)
-		{
-			// c->origin_x = 0.0f;
-			c->end_x = width;
-			c->end_y = height;
-		}
-		
-		// Snapping of pointer to cell corners
-		if(m.x > c->origin_x){
-			float p_x = 0.0f;
-			float p_y = 0.0f;
-
-			p_x = m.x - c->origin_x ;
-			p_x = p_x / c->getCellWidth();
-			float offset = fmodf(p_x,1.0f);
-			p_x = ((offset > 0.5f) ? ceilf(p_x) : floorf(p_x))  * c->getCellWidth() + c->origin_x;
-			
-			p_y = m.y - c->origin_y;
-			p_y = p_y / c->getCellHeight();
-			offset = fmodf(p_y, 1.0f);
-
-			p_y = ((offset > 0.5f) ? ceilf(p_y) : floorf(p_y))  * c->getCellHeight() + c->origin_y;
-			
-			// m_Renderer->drawPoint({ p_x , p_y, 0.0f }, { 0.560f, 0.f, 0.188f });
-			// m_Renderer->drawQuad({ p_x , p_y, 0.0f }, { c->getCellWidth(), c->getCellHeight() }, { 0.560f, 0.f, 0.188f });
-			m_Renderer->drawPoint({ p_x , p_y, 0.0f }, {}, 2.0f);
-
-		}
-		
-		
+	
 
 		// Handle mouse scroll
 
-		drawUI();
+		drawUI(c);
 		glfwSwapBuffers(m_Window_Object->m_Window);
 		glfwPollEvents();
 

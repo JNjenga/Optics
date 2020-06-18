@@ -1,5 +1,5 @@
-#ifndef VISUAL_LOG_H
-#define VISUAL_LOG_H
+#ifndef VISION_LOG_H
+#define VISION_LOG_H
 
 #define LOG(x)
 #define LOG_INFO(x)

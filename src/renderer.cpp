@@ -100,11 +100,39 @@ void Vis::Renderer::drawCartesianPlane(Vis::Cartesian * c) const
 		// printf("(%d , %d ),(%d , %d)\n", c->origin_x, j,c->end_x, j);
 		j+=c->getCellHeight();
 	}
-
-
-
-
 }
+
+void Vis::Renderer::drawCartesianPlane(Vis::CartesianPlane * c) const
+{
+	int v_lines = (int)(c->width / c->getCellWidth()) + 1;
+	int h_lines = (int)(c->height / c->getCellHeight()) + 1;
+	
+	// Draw vertical lines
+	
+	for(int i = 0; i < v_lines; i++){
+		float origin_offest = c->x_origin + (c->getCellWidth()* i);
+		float end_offset = c->y_origin + c->height;
+		
+		if(i == v_lines/2 ){
+			drawLine({ origin_offest, c->y_origin }, { origin_offest , end_offset }, {1.0f, 0.0f, 1.0f}, c->line_weight);
+			continue;
+		}
+		drawLine({ origin_offest, c->y_origin }, { origin_offest , end_offset }, {}, c->line_weight);
+	}
+
+	
+	for(int i = 0; i < h_lines; i++){
+		float origin_offest = c->y_origin + (c->getCellHeight()* i);
+		float end_offset = c->x_origin + c->width;
+
+		if(i == h_lines/2 ){
+			drawLine({  c->x_origin, origin_offest }, { end_offset, origin_offest  }, {0.2f, 0.6f, 0.6f}, c->line_weight);
+			continue;
+		}
+		drawLine({  c->x_origin, origin_offest }, { end_offset, origin_offest  }, {}, c->line_weight);
+	}
+}
+
 void Vis::Renderer::clear(glm::vec3 color, float alpha) const
 {
 	glClear(GL_COLOR_BUFFER_BIT);

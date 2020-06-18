@@ -18,7 +18,7 @@ namespace Vis
 
 		VisualWindow * m_Window_Object;
 		Renderer * m_Renderer;
-		Vis::Cartesian * c;
+		Vis::CartesianPlane * c;
 
 		static Vis::Application  * getApp();
 

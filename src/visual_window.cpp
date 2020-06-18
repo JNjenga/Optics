@@ -61,7 +61,7 @@ void Vis::VisualWindow::init(int width, int height)
 		{
 			auto & m = Vis::Mouse::getMouse();
 			m.y_scroll = yoffset;
-			std::cout << "Xoffset : " << xoffset << " Yoffset : " << yoffset << "\n";
+			std::cout << "Xoffset : " << xoffset << " Yoffset : " << m.y_scroll << "\n";
 
 		}
 	);

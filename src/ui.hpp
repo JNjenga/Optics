@@ -13,6 +13,7 @@
 #define NK_KEYSTATE_BASED_INPUT
 
 #include "application.hpp"
+#include "cartesian.hpp"
 
 #include "nuklear/nuklear.h"
 #include "nuklear/nuklear_glfw_gl2.h"
@@ -182,20 +183,31 @@ static void appMenu(nk_context *ctx)
 	nk_checkbox_label(ctx, "Enable D", &mcheck);
 
 }
-static void cpSettings(nk_context *ctx)
+static void cpSettings(nk_context *ctx, Vis::CartesianPlane *c)
 {
 	nk_layout_row_dynamic(ctx, 25, 1);
 
-	if (nk_tree_push(ctx, NK_TREE_TAB, "Cartesian Plane", NK_MINIMIZED))
+	if (nk_tree_push(ctx, NK_TREE_TAB, "Cartesian Plane", NK_MAXIMIZED))
 	{
 		nk_layout_row_dynamic(ctx, 25, 1);
 
 		static int property = 20;
 		nk_property_int(ctx, "Compression:", 0, &property, 100, 10, 1);
+
+		nk_layout_row_dynamic(ctx, 25, 1);
+		nk_property_float(ctx, "Line weight:", 0.5f, &c->line_weight, 5.0f, 0.1f, 0.1f);
+		nk_property_float(ctx, "Scale:", 0.3f, &c->scale, 2.0f, 0.1f, 0.1f);
+		nk_layout_row_dynamic(ctx, 25, 1);
+		nk_property_float(ctx, "x:", -1000.0f, &c->x_origin, 1000.0f, 1.0f, 1.0f);
+		nk_property_float(ctx, "y:", -1000.0f, &c->y_origin, 1000.0f, 1.0f, 1.0f);
+		nk_property_float(ctx, "Width:", -1000.0f, &c->width, 1000.0f, 1.0f, 1.0f);
+		nk_property_float(ctx, "Height:", -1000.0f, &c->height, 1000.0f, 1.0f, 1.0f);
+		
+
 		nk_tree_pop(ctx);
 	}
 }
-static void drawUI()
+static void drawUI(Vis::CartesianPlane * c)
 {
 	nk_glfw3_new_frame();
 	static float scale = 1.0f;
@@ -206,7 +218,7 @@ static void drawUI()
 	{
 
 		appMenu(ctx);
-		cpSettings(ctx);
+		cpSettings(ctx, c);
 	}
 
 	nk_end(ctx);

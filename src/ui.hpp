@@ -170,6 +170,7 @@ static void nuklearInit()
 
 static void appMenu(nk_context *ctx)
 {
+	/*
 	static int mcheck = nk_true;
 
 	nk_layout_row_dynamic(ctx, 25, 1);
@@ -181,7 +182,7 @@ static void appMenu(nk_context *ctx)
 	nk_checkbox_label(ctx, "Enable C", &mcheck);
 	nk_layout_row_dynamic(ctx, 25, 1);
 	nk_checkbox_label(ctx, "Enable D", &mcheck);
-
+*/
 }
 static void cpSettings(nk_context *ctx, Vis::CartesianPlane *c)
 {
@@ -190,9 +191,6 @@ static void cpSettings(nk_context *ctx, Vis::CartesianPlane *c)
 	if (nk_tree_push(ctx, NK_TREE_TAB, "Cartesian Plane", NK_MAXIMIZED))
 	{
 		nk_layout_row_dynamic(ctx, 25, 1);
-
-		static int property = 20;
-		nk_property_int(ctx, "Compression:", 0, &property, 100, 10, 1);
 
 		nk_layout_row_dynamic(ctx, 25, 1);
 		nk_property_float(ctx, "Line weight:", 0.5f, &c->line_weight, 5.0f, 0.1f, 0.1f);

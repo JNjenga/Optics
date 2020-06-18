@@ -1,16 +1,16 @@
-#ifndef VISUAL_GLFW_WINDOW_H
-#define VISUAL_GLFW_WINDOW_H
+#ifndef VISION_GLFW_WINDOW_H
+#define VISION_GLFW_WINDOW_H
 
 namespace Vis
 {
-	struct VisualWindow
+	struct VisionWindow
 	{
 		virtual void init(int width, int height) ;
 		virtual void update() ;
 
 		GLFWwindow * getWindow() const;
 
-		virtual ~VisualWindow();
+		~VisionWindow();
 		
 		GLFWwindow * m_Window;
 	};

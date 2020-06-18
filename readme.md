@@ -1,30 +1,50 @@
-*Still under dev*
+# Vision
 
-Visualize :
 
-- Audio Files (.mp3)
-- Algorithms
-- Graphs
-- Wave functions
 
-And more
+#### Introduction
 
-Cool stuff I'd want to visualize:
-- [Conoway's game of life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
-- [MandelBrot sets stuff](https://en.wikipedia.org/wiki/Mandelbrot_set)
+This is a project to visualize things.
 
-Tech used : Opengl
+**Still very early in development .**
 
-### How to run
-This is how I intend to run the application,  none of this has been implemented yet !
-`vision data.mp3`
-`vision data.csv`
+![grid screenshot](https://raw.githubusercontent.com/JNjenga/vision/master/screenshots/grid.jpg)
 
-### How build
+![](D:\Projects\CGamedev\Vision\screenshots\grid.jpg)
 
- - Generate project files using premake
-Run the premake script
-`premake5 vs2017` for windows or `premake5 gmake2`
+ The main aim is to provide an visual perspective of things like algorithms, graphs, mathematical operations, cellular automation etc.
 
-The solution/make files will be in the `workspace` directory.
+#### Implementation
 
+Uses openGL, specifically legacy openGL. I decided to use legacy because I really wanted to learn immediate mode rendering since I have somewhat knowledge of how retained mode works.
+
+Uses nuklear for the controls.
+
+#### How to build
+
+###### Windows
+
+```
+git clone https://github.com/Jnjenga/vision
+cd vision
+.\premake\premake5 vs2017
+```
+
+A new directory ``` workspace ```  containing the project files will be created. 
+
+Open the ```VisionWorkspace.sln``` build the project and run it using visual studio.
+
+###### Linux
+
+```
+git clone https://github.com/Jnjenga/vision
+cd vision
+./premake/premake5 gmake2
+./make_run
+```
+
+This will run the project
+
+###### License
+
+[Check here](https://github.com/Jnjenga/vision)

@@ -1,8 +1,8 @@
-workspace 'VisualWorkspace'
+workspace 'ViisonWorkspace'
 	location 'workspace'
 	architecture 'x86_64'
 	language 'C++'
-	startproject 'Visual'
+	startproject 'Vision'
 	configurations { "Debug", "Release" }
 
 	
@@ -23,7 +23,7 @@ include '3rdParty/glad'
 include '3rdParty/glfw'
 -- include '3rdParty/dearimgui'
 
-project 'Visual'
+project 'Vision'
 	kind 'ConsoleApp'
 	language 'C++'
 
@@ -49,6 +49,7 @@ project 'Visual'
 
 	filter {'system:windows'}
 		links {'Opengl32'}
+		defines{ '_CRT_SECURE_NO_WARNINGS' }
 	filter{}
 
 	filter {'system:not windows'}

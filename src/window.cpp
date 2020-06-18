@@ -1,10 +1,10 @@
 #include "vis_pch.hpp"
 
-#include "visual_window.hpp"
+#include "window.hpp"
 #include "application.hpp"
 #include "input.hpp"
 
-void Vis::VisualWindow::init(int width, int height)
+void Vis::VisionWindow::init(int width, int height)
 {
 	if (!glfwInit())
 	{
@@ -13,7 +13,7 @@ void Vis::VisualWindow::init(int width, int height)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-	m_Window = glfwCreateWindow(width, height, "Visual", NULL, NULL);
+	m_Window = glfwCreateWindow(width, height, "Vision", NULL, NULL);
 
 	if (!m_Window)
 	{
@@ -46,6 +46,8 @@ void Vis::VisualWindow::init(int width, int height)
 					m.m_State = Vis::MouseEvents::LEFT_CLICK;
 				else if (button == GLFW_MOUSE_BUTTON_2)
 					m.m_State = Vis::MouseEvents::RIGHT_CLICK;
+				else if (button == GLFW_MOUSE_BUTTON_3)
+					m.m_State = Vis::MouseEvents::CENTER_CLICK;
 			}
 			else if(action == GLFW_RELEASE)
 			{
@@ -102,17 +104,17 @@ void Vis::VisualWindow::init(int width, int height)
 
 }
 
-void Vis::VisualWindow::update()
+void Vis::VisionWindow::update()
 {
 	glfwPollEvents();
 	glfwSwapBuffers(m_Window);
 }
 
-GLFWwindow * Vis::VisualWindow::getWindow() const
+GLFWwindow * Vis::VisionWindow::getWindow() const
 {
 	return m_Window;
 }
-Vis::VisualWindow::~VisualWindow()
+Vis::VisionWindow::~VisionWindow()
 {
 	glfwTerminate();
 }

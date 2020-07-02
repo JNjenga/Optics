@@ -10,7 +10,7 @@ This is a project to visualize things.
 
 ![grid screenshot](https://github.com/JNjenga/Vision/blob/master/screenshots/grid.jpg)
 
- The main aim is to provide an visual perspective of things like algorithms, graphs, mathematical operations, cellular automation etc.
+ The main aim is to provide a visual perspective of things like algorithms, graphs, mathematical operations, cellular automation etc.
 
 #### Implementation
 

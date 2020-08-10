@@ -6,8 +6,9 @@
 
 namespace Vis
 {
-	struct Application
+	class Application
 	{
+	public:
 		static uint32_t WIDTH, HEIGHT;
 
 		void init() ;

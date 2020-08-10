@@ -6,6 +6,11 @@
 
 namespace Vis {
 
+	struct Cell
+	{
+		uint16_t x, y;
+	};
+
 	struct CartesianPlane {
 
 		float x_origin = 0.0f;
@@ -19,7 +24,18 @@ namespace Vis {
 		float cell_width = 0.0f, cell_height = 0.0f;
 
 
-		std::vector<glm::vec2> shaded;
+		std::vector<Cell*> shaded;
+
+		std::vector<Cell*> cells;
+
+		void addShaded(uint16_t x, uint16_t y)
+		{
+			Cell * cell = new Cell;
+			cell->x = x;
+			cell->y = y;
+
+			shaded.push_back(cell);
+		}
 
 		CartesianPlane(float x , float y,
 			float w, float h, float c_w, float c_h, float s, float l_w = 3.0f)

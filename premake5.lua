@@ -1,4 +1,4 @@
-workspace 'ViisonWorkspace'
+workspace 'VisonWorkspace'
 	location 'workspace'
 	architecture 'x86_64'
 	language 'C++'

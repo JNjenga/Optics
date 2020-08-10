@@ -77,6 +77,21 @@ void Vis::Renderer::drawCartesianPlane(Vis::CartesianPlane * c) const
 	// Draw background
 	drawQuad({ c->x_origin, c->y_origin }, { c->width, c->height }, { 0.870f, 0.945f, 0.835f });
 
+	// Shaded
+
+	for (auto coord : c->shaded)
+	{
+		float quad_x = coord->x *  c->getCellWidth() + c->x_origin;
+		float quad_y = coord->y *  c->getCellHeight() + c->y_origin;
+
+		// Check if visible
+		if (quad_x > (c->x_origin + c->width) || quad_y > (c->y_origin + c->height))
+			continue;
+
+		drawQuad({ quad_x, quad_y }, { c->getCellWidth(), c->getCellHeight() }, { 0.9f, 0.45f, 0.35f });
+	}
+
+
 	// Draw vertical lines
 
 	for(int i = 0; i < v_lines; i++){
@@ -104,19 +119,6 @@ void Vis::Renderer::drawCartesianPlane(Vis::CartesianPlane * c) const
 		drawLine({  c->x_origin, origin_offest }, { end_offset, origin_offest  }, {}, c->line_weight);
 	}
 
-	// Shaded
-
-	for (glm::vec2 & coord :  c->shaded )
-	{
-		float quad_x = coord.x *  c->getCellWidth() + c->x_origin;
-		float quad_y = coord.y *  c->getCellHeight() + c->y_origin;
-		
-		// Check if visible
-		if (quad_x > (c->x_origin + c->width) || quad_y > (c->y_origin + c->height))
-			continue;
-
-		drawQuad({ quad_x, quad_y }, { c->getCellWidth(), c->getCellHeight() }, { 0.9f, 0.45f, 0.35f });
-	}
 }
 
 void Vis::Renderer::clear(glm::vec3 color, float alpha) const

@@ -3,6 +3,8 @@
 #include "application.hpp"
 #include "window.hpp"
 #include <math.h>
+#include <thread>
+#include <chrono>
 #include "input.hpp"
 #include "ui.hpp"
 
@@ -20,13 +22,6 @@ void Vis::Application::init()
 	m_Window_Object = new VisionWindow();
 	m_Window_Object->init(WIDTH, HEIGHT);
 
-	/*
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		LOG_FATAL("Failed to load glad\n");
-	}
-	*/
-
 	// Create and initialize renderer
 	m_Renderer = new Renderer();
 	m_Renderer->init();
@@ -35,12 +30,11 @@ void Vis::Application::init()
 
 void Vis::Application::update()
 {
-	/* Panning 
-	*Left control and mouse move
-	*/
+	 
 	auto & m = Vis::Mouse::getMouse();
 	auto & k = Vis::Keys::getKeys();
 
+	/* Zooming : Left control and Scroll up/down */
 	if (k.keys[GLFW_KEY_LEFT_CONTROL])
 	{
 		if (m.y_scroll > 0)
@@ -61,16 +55,16 @@ void Vis::Application::update()
 		m.y_scroll = 0;
 	}
 
-	/* Panning
-	*/
+	/* Panning : Center mouse button and move mouse */
 	if (m.mouseCenterClick())
 	{
 		c->x_origin += m.dx;
 		c->y_origin += m.dy;
 	}
 
-	/* Update type of mouse */
+	/* Update type of mouse cursor when mouse enters the grid*/
 
+	/*
 	if ((m.x > c->x_origin && m.x < c->getWidthBounds()) 
 			&& (m.y > c->y_origin && m.y < c->getHeightBounds()))
 	{
@@ -80,6 +74,7 @@ void Vis::Application::update()
 	{
 		// TODO : Handle if the mouse exits the cartesian plane
 	}
+	*/
 
 }
 
@@ -92,34 +87,46 @@ void Vis::Application::run()
 	float width = static_cast<float>(WIDTH);
 	float height = static_cast<float>(HEIGHT);
 
+	/* Initialize the catesian plane */
+
 	c = new Vis::CartesianPlane(0.0f, 0.0f, width, height, 40.0f, 40.0f, .5f);
 
-	c->shaded.push_back(glm::vec2());
-	c->shaded.push_back(glm::vec2(2.0f, 2.0f));
-	c->shaded.push_back(glm::vec2(3.0f, 5.0f));
-	c->shaded.push_back(glm::vec2(32.0f, 2.0f));
-	c->shaded.push_back(glm::vec2(2.0f, 23.0f));
+	c->addShaded(7, 7);
+	c->addShaded(7, 8);
+	c->addShaded(7, 9);
+	c->addShaded(8, 7);
+	c->addShaded(8, 8);
+	c->addShaded(8, 9);
+	c->addShaded(9, 7);
+	c->addShaded(9, 8);
+	c->addShaded(9, 9);
+
+	/* Initialize the nuklear */
 
 	nuklearInit();
 
+	/* Game loop */
+	int counter = 0;
 	while (!glfwWindowShouldClose(m_Window_Object->getWindow()))
 	{
-		
-		width = static_cast<float>(WIDTH);
-		height = static_cast<float>(HEIGHT);
+		if (counter > 10)
+		{
+			counter = 0;
+		}
+		if (counter < 10) {
+			m_Renderer->clear();
+			m_Renderer->drawCartesianPlane(c);
+			drawUI(c);
+			glfwSwapBuffers(m_Window_Object->m_Window);
+		}
 
-		m_Renderer->clear();
-		
-		m_Renderer->drawCartesianPlane(c);
-	
-
-		// Handle mouse scroll
-
-		drawUI(c);
-		glfwSwapBuffers(m_Window_Object->m_Window);
 		glfwPollEvents();
 
 		update();
+
+		counter++;
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 
 	nk_glfw3_shutdown();
@@ -140,7 +147,7 @@ Vis::Application * Vis::Application::getApp()
 		return app;
 }
 
-/* For reference puroposes
+/* API refrence
 if (m.mouseLeftClick())
 {
 	m_Renderer->drawQuad({ 0.0f, 0.0f, 0.0f }, { m.x, m.y }, { 0.188f, 0.247f, 0.623f });

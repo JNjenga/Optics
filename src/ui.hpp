@@ -201,6 +201,36 @@ static void cpSettings(nk_context *ctx, Vis::CartesianPlane *c)
 		nk_property_float(ctx, "Width:", -1000.0f, &c->width, 1000.0f, 1.0f, 1.0f);
 		nk_property_float(ctx, "Height:", -1000.0f, &c->height, 1000.0f, 1.0f, 1.0f);
 		
+		nk_layout_row_dynamic(ctx, 25, 1);
+
+		static int c_x = 0, c_y = 0;
+
+		nk_property_int(ctx, "x:", 1, &c_x, 50, 1, 1);
+		nk_property_int(ctx, "y:", 1, &c_y, 50, 1, 1);
+
+		if (nk_button_label(ctx, "Add")) {
+			c->addShaded(c_x, c_y);
+		}
+		nk_tree_pop(ctx);
+	}
+}
+
+static void golSettings(nk_context *ctx, Vis::CartesianPlane * c)
+{
+	nk_layout_row_dynamic(ctx, 25, 1);
+
+	if (nk_tree_push(ctx, NK_TREE_TAB, "Game of life", NK_MAXIMIZED))
+	{
+		static int tick = 0;
+
+		nk_layout_row_dynamic(ctx, 25, 1);
+
+		nk_layout_row_dynamic(ctx, 25, 1);
+		nk_property_int(ctx, "Tick:", 1, &tick, 50, 1, 1);
+
+		if (nk_button_label(ctx, "Tick")) {
+			// std::for_each();
+		}
 
 		nk_tree_pop(ctx);
 	}
@@ -217,6 +247,7 @@ static void drawUI(Vis::CartesianPlane * c)
 
 		appMenu(ctx);
 		cpSettings(ctx, c);
+		golSettings(ctx, c);
 	}
 
 	nk_end(ctx);

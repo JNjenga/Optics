@@ -8,11 +8,9 @@ This is a project to visualize things.
 
 **Still very early in development .**
 
-![grid screenshot](https://raw.githubusercontent.com/JNjenga/vision/master/screenshots/grid.jpg)
+![grid screenshot](https://github.com/JNjenga/Vision/blob/master/screenshots/grid.jpg)
 
-![](D:\Projects\CGamedev\Vision\screenshots\grid.jpg)
-
- The main aim is to provide an visual perspective of things like algorithms, graphs, mathematical operations, cellular automation etc.
+ The main aim is to provide a visual perspective of things like algorithms, graphs, mathematical operations, cellular automation etc.
 
 #### Implementation
 
@@ -42,9 +40,4 @@ cd vision
 ./premake/premake5 gmake2
 ./make_run
 ```
-
 This will run the project
-
-###### License
-
-[Check here](https://github.com/Jnjenga/vision)

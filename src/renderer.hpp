@@ -1,38 +1,54 @@
 #ifndef VISION_RENDERER_H
 #define VISION_RENDERER_H
 
-#include <glm/glm.hpp>
-#include "cartesian.hpp"
+#include "vis_pch.hpp"
 
-namespace Vis
+struct Shader
 {
+	GLuint program_id;
+	std::unordered_map<const char *, GLuint> uniforms;
 
-	struct Renderer
-	{
-		virtual void init() ;
-		
-		virtual void drawPoint(
-			glm::vec3 position, glm::vec3 color = glm::vec3(1.0f, 0.0f, 0.0f),
-			float p_size = 10.0f) const;
+	void create(const std::string & shader_name);
 
-		virtual void drawQuad(
-			const glm::vec2 position,
-			const glm::vec2 size,
-			const glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f)) const;
-		virtual void drawLine(const glm::vec2 start, const glm::vec2 end,
-				const::glm::vec3 color = glm::vec3(1.0f,0.0f, 0.0f) ,
-				float width = 1.0f) const;
+	void checkErrors(int shader, int type);
 
-		virtual void drawCartesianPlane(float x, float y,float x_end, float y_end,
-				float cellWidth, float cellHeight) const ;
+	void bind();
+	void unbind();
 
-		void drawCartesianPlane(CartesianPlane *c) const;
-		
-		virtual void clear(glm::vec3 color = glm::vec3(0.92f, 0.92f, 0.92f), float alpha = 1.0f) const;
+	inline GLuint getUniformLocation(const char * name);
 
-		virtual ~Renderer();
+	bool setFloat(const char * name, float value);
 
-	};
-}
+	bool setInt(const char * name, int value);
+
+	bool setMat4(const char * name, glm::mat4 & value);
+	bool setVec3(const char * name, glm::vec3 & value);
+};
+
+struct Mesh
+{
+	GLuint vao;
+	GLuint vertices;
+
+	void init();
+};
+
+struct Texture
+{
+	GLuint texture_id;
+
+	void init(const char * name);
+	void bind();
+};
+
+void initFonts();
+
+void initRenderer();
+
+void drawQuad(glm::vec2 position, float rotation, glm::vec2 size, glm::vec3 color);
+
+void drawQuad(const char * texture, glm::vec2 position, float rotation, glm::vec2 size, glm::vec3 color);
+
+void drawText(const char * text, glm::vec2 position, glm::vec2 size, glm::vec3 color);
 
 #endif

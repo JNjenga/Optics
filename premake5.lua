@@ -1,8 +1,8 @@
 workspace 'VisonWorkspace'
 	location 'workspace'
-	architecture 'x86_64'
+	architecture 'x86'
 	language 'C++'
-	startproject 'Vision'
+	startproject 'vision'
 	configurations { "Debug", "Release" }
 
 	
@@ -14,27 +14,21 @@ workspace 'VisonWorkspace'
 
 	targetdir 'bin'
 
-	objdir 'bin/Obj'
-
-	-- cppdialect 'C++11'
-
--- Include Glad
-include '3rdParty/glad'
-include '3rdParty/glfw'
--- include '3rdParty/dearimgui'
+	objdir 'bin/obj'
 
 project 'Vision'
 	kind 'ConsoleApp'
 	language 'C++'
 
 	includedirs{
-		'3rdParty/glfw/include',
-		'3rdParty/glad/include',
-		'3rdParty/glm',
+		'deps/glfw/include',
+		'deps/glew/include',
+		'deps/glm',
+		'deps/stb',
 		'src',
 	}
 
-	-- pchheader "src/vis_pch.hpp"
+	pchheader "vis_pch.hpp"
 
 	files {
 		'src/**.cpp',
@@ -42,9 +36,14 @@ project 'Vision'
 		'src/**.h'
 	}
 
+	libdirs {
+		'deps/glfw/lib-vc2017',
+		'deps/glew/lib',
+	}
+	
 	links {
-		'GlfwStatic3.3',
-		'Glad'
+		'glfw3',
+		'glew32'
 	}
 
 	filter {'system:windows'}
@@ -53,14 +52,14 @@ project 'Vision'
 	filter{}
 
 	filter {'system:not windows'}
-	links {
-		"GL",
-		"dl",
-		"pthread",
-		"X11",
-		"Xxf86vm",
-		"Xrandr",
-		"Xi",
-		"Xinerama",
-		"Xcursor",
-	}
+		links {
+			"GL",
+			"dl",
+			"pthread",
+			"X11",
+			"Xxf86vm",
+			"Xrandr",
+			"Xi",
+			"Xinerama",
+			"Xcursor",
+		}

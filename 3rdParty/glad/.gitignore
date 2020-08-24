@@ -1,6 +1,0 @@
-*.slo
-*.lo
-*.o
-*.obj
-
-Build/**
